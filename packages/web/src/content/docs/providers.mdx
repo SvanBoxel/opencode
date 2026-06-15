@@ -1856,6 +1856,40 @@ OpenCode Zen is a list of tested and verified models provided by the OpenCode te
    /models
    ```
 
+#### Self-hosted
+
+If you run Poolside on your own infrastructure, configure it as a custom OpenAI-compatible provider pointed at your deployment's `/openai/v1` endpoint, and provide your API key through the `POOLSIDE_API_KEY` environment variable:
+
+```bash
+export POOLSIDE_API_KEY=your-key-here
+```
+
+```json title="opencode.json"
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "poolside/laguna_m_preview",
+  "provider": {
+    "poolside": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Poolside",
+      "env": ["POOLSIDE_API_KEY"],
+      "options": {
+        "baseURL": "https://poolside.example.com/openai/v1"
+      },
+      "models": {
+        "poolside/laguna_m_preview": {
+          "name": "Laguna M (preview)"
+        }
+      }
+    }
+  }
+}
+```
+
+- **env**: the environment variable(s) opencode reads your API key from.
+- **options.baseURL**: your self-hosted endpoint — replace `poolside.example.com` with your deployment's host. The OpenAI-compatible path is `/openai/v1`.
+- **models**: the model IDs your deployment exposes. Run `curl https://poolside.example.com/openai/v1/models` (with your key) to list them.
+
 :::tip
 You can also install the [`pool` CLI](https://downloads.poolside.ai/pool/install.sh) from the Poolside platform's **Quick Start** tab to use Poolside agents directly from your terminal or editor.
 :::
